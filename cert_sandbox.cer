@@ -1,0 +1,56 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# Safaricom Certificate Manager with automatic validation + environment switching
+
+SANDBOX_CERT="cert_sandbox.cer"
+PROD_CERT="cert_prod.cer"
+ENV_FILE="active_env.conf"
+
+validate_cert() {
+    FILE=$1
+    echo
+    echo "🔎 Validating $FILE ..."
+    if openssl x509 -inform PEM -in "$FILE" -noout -text > /dev/null 2>&1; then
+        echo "✅ $FILE is a valid PEM certificate."
+    else
+        echo "❌ $FILE is NOT a valid certificate. Please check formatting."
+    fi
+    echo "------------------------------------"
+}
+
+set_env() {
+    echo "$1" > "$ENV_FILE"
+    echo "🌍 Active environment set to: $1"
+}
+
+echo "=============================="
+echo "   Safaricom Certificate Manager"
+echo "=============================="
+echo "1) Edit Sandbox Certificate"
+echo "2) Edit Production Certificate"
+echo "3) Exit"
+echo "=============================="
+read -p "Choose an option [1-3]: " choice
+
+case $choice in
+  1)
+    echo "Opening Sandbox certificate ($SANDBOX_CERT)..."
+    [ ! -f "$SANDBOX_CERT" ] && touch "$SANDBOX_CERT"
+    nano "$SANDBOX_CERT"
+    validate_cert "$SANDBOX_CERT"
+    set_env "sandbox"
+    ;;
+  2)
+    echo "Opening Production certificate ($PROD_CERT)..."
+    [ ! -f "$PROD_CERT" ] && touch "$PROD_CERT"
+    nano "$PROD_CERT"
+    validate_cert "$PROD_CERT"
+    set_env "production"
+    ;;
+  3)
+    echo "Exiting..."
+    exit 0
+    ;;
+  *)
+    echo "Invalid choice. Please run again."
+    ;;
+esac

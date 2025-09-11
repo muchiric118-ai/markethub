@@ -1,0 +1,6 @@
+ccxt==3.0.97
+pandas==2.2.0
+numpy==1.27.5
+aiohttp==3.9.5
+python-telegram-bot==20.3
+cryptography==45.0.7
