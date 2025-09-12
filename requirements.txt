@@ -1,6 +1,6 @@
 ccxt==4.5.4
-pandas==2.2.0
-numpy==1.27.5
+pandas==2.2.2        # ✅ binary wheels available
+numpy==1.26.4        # ✅ stable and wheel support
 aiohttp==3.9.5
 python-telegram-bot==20.3
-cryptography==45.0.7
+cryptography==42.0.8 # ✅ last stable wheel
